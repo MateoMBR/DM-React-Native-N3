@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Image, FlatList, ActivityIndicator } from 'react-native';
+import { Text, Card } from 'react-native-paper';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import WeatherItem from '../components/WeatherItem';
@@ -54,13 +55,17 @@ function WeatherAppScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>{weather.name}</Text>
-      <Text>{weather.main.temp} °C</Text>
-      <Text>{weather.weather[0].description}</Text>
-      <Image
-        style={styles.icon}
-        source={{ uri: `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png` }}
-      />
+      <Card style={styles.card}>
+        <Card.Content>
+          <Text style={styles.title}>{weather.name}</Text>
+          <Text style={styles.temp}>{weather.main.temp} °C</Text>
+          <Text style={styles.description}>{weather.weather[0].description}</Text>
+          <Image
+            style={styles.icon}
+            source={{ uri: `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png` }}
+          />
+        </Card.Content>
+      </Card>
       <FlatList
         data={forecast.list}
         keyExtractor={(item) => item.dt.toString()}
@@ -73,12 +78,31 @@ function WeatherAppScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
+  },
+  card: {
+    marginBottom: 20,
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  temp: {
+    fontSize: 20,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  description: {
+    fontSize: 16,
+    marginBottom: 10,
+    textAlign: 'center',
   },
   icon: {
     width: 50,
     height: 50,
+    alignSelf: 'center',
   },
 });
 

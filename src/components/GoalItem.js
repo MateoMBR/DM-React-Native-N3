@@ -1,42 +1,30 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { List, IconButton } from 'react-native-paper';
 
 function GoalItem({ goal, onDelete, onEdit }) {
   return (
-    <View style={styles.goalItem}>
-      <Text>{goal.value}</Text>
-      <View style={styles.buttons}>
-        <TouchableOpacity onPress={() => onEdit(goal)}>
-          <Text style={styles.editButton}>✏️</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => onDelete(goal.key)}>
-          <Text style={styles.deleteButton}>❌</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <List.Item
+      title={goal.value}
+      right={() => (
+        <View style={styles.buttons}>
+          <IconButton icon="pencil" color="blue" onPress={() => onEdit(goal)} />
+          <IconButton icon="delete" color="red" onPress={() => onDelete(goal.key)} />
+        </View>
+      )}
+      style={styles.goalItem}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   goalItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    borderWidth: 1,
+    backgroundColor: '#f0f0f0',
+    marginVertical: 5,
+    borderRadius: 5,
   },
   buttons: {
     flexDirection: 'row',
-  },
-  editButton: {
-    marginRight: 10,
-    color: 'blue',
-  },
-  deleteButton: {
-    color: 'red',
   },
 });
 

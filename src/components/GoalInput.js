@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Modal } from 'react-native';
+import { View, StyleSheet, Modal } from 'react-native';
+import { TextInput, Button, Portal, Dialog } from 'react-native-paper';
 
 function GoalInput({ visible, onAddGoal, onCancel, goalToEdit, onEditGoal }) {
   const [enteredGoal, setEnteredGoal] = useState('');
@@ -24,32 +25,29 @@ function GoalInput({ visible, onAddGoal, onCancel, goalToEdit, onEditGoal }) {
   };
 
   return (
-    <Modal visible={visible} animationType="slide">
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Nouvel objectif"
-          style={styles.input}
-          onChangeText={goalInputHandler}
-          value={enteredGoal}
-        />
-        <Button title={goalToEdit ? "Edit" : "Add"} onPress={addGoalHandler} />
-        <Button title="Cancel" color="red" onPress={onCancel} />
-      </View>
-    </Modal>
+    <Portal>
+      <Dialog visible={visible} onDismiss={onCancel}>
+        <Dialog.Title>{goalToEdit ? "Edit Goal" : "Add Goal"}</Dialog.Title>
+        <Dialog.Content>
+          <TextInput
+            label="Nouvel objectif"
+            mode="outlined"
+            style={styles.input}
+            onChangeText={goalInputHandler}
+            value={enteredGoal}
+          />
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button onPress={onCancel} color="red">Cancel</Button>
+          <Button onPress={addGoalHandler}>{goalToEdit ? "Edit" : "Add"}</Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Portal>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   input: {
-    width: '80%',
-    borderColor: 'black',
-    borderWidth: 1,
-    padding: 10,
     marginBottom: 10,
   },
 });

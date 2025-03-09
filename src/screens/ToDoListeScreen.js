@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import { View, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import { Button, TextInput, Dialog, Portal, Card, FAB } from 'react-native-paper';
 import GoalItem from '../components/GoalItem';
 import GoalInput from '../components/GoalInput';
 
@@ -38,7 +39,9 @@ function ToDoListeScreen() {
   return (
     <ImageBackground source={require('../assets/background.avif')} style={styles.background}>
       <View style={styles.screen}>
-        <Button title="Add New Goal" onPress={() => setIsAddMode(true)} />
+        <Button mode="contained" onPress={() => setIsAddMode(true)} style={styles.button}>
+          Add New Goal
+        </Button>
         <GoalInput
           visible={isAddMode}
           onAddGoal={addGoalHandler}
@@ -68,6 +71,9 @@ const styles = StyleSheet.create({
   },
   screen: {
     padding: 50,
+  },
+  button: {
+    marginBottom: 20,
   },
 });
 

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, FlatList } from 'react-native';
+import { Text, Button, Searchbar, List } from 'react-native-paper';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import CocktailItem from '../components/CocktailItem';
 
 const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
 const SEARCH_URL = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
@@ -17,9 +19,9 @@ function CocktailsScreen() {
     fetchCocktails();
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
-          <Text style={styles.headerRight}>⭐</Text>
-        </TouchableOpacity>
+        <Button icon="star" onPress={() => navigation.navigate('Favorites')}>
+          Favoris
+        </Button>
       ),
     });
   }, []);
@@ -54,8 +56,7 @@ function CocktailsScreen() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.searchInput}
+      <Searchbar
         placeholder="Rechercher par ingrédient"
         value={search}
         onChangeText={setSearch}
@@ -65,12 +66,12 @@ function CocktailsScreen() {
         data={cocktails}
         keyExtractor={(item) => item.idDrink}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('CocktailDetail', { cocktailId: item.idDrink })}>
-            <View style={styles.cocktailItem}>
-              <Image source={{ uri: item.strDrinkThumb }} style={styles.image} />
-              <Text style={styles.name}>{item.strDrink}</Text>
-            </View>
-          </TouchableOpacity>
+          <List.Item
+            title={item.strDrink}
+            description={item.strCategory}
+            left={() => <List.Icon icon="glass-cocktail" />}
+            onPress={() => navigation.navigate('CocktailDetail', { cocktailId: item.idDrink })}
+          />
         )}
         onEndReached={fetchCocktails}
         onEndReachedThreshold={0.5}
@@ -84,26 +85,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-  },
-  searchInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  cocktailItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-  },
-  name: {
-    fontSize: 16,
   },
   headerRight: {
     fontSize: 24,
