@@ -5,6 +5,7 @@ import HomeScreen from './screens/HomeScreen';
 import ToDoListeScreen from './screens/ToDoListeScreen';
 import WeatherAppScreen from './screens/WeatherAppScreen';
 import CocktailsScreen from './screens/CocktailsScreen';
+import CocktailDetailScreen from './screens/CocktailDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ function AppNavigator() {
         <Stack.Screen name="ToDoListe" component={ToDoListeScreen} />
         <Stack.Screen name="WeatherApp" component={WeatherAppScreen} />
         <Stack.Screen name="Cocktails" component={CocktailsScreen} />
+        <Stack.Screen name="CocktailDetail" component={CocktailDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

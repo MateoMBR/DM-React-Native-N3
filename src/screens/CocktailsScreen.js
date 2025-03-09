@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
 
-function CocktailsScreen() {
+function CocktailsScreen({ navigation }) {
   const [cocktails, setCocktails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState('a');
@@ -36,10 +36,12 @@ function CocktailsScreen() {
         data={cocktails}
         keyExtractor={(item) => item.idDrink}
         renderItem={({ item }) => (
-          <View style={styles.cocktailItem}>
-            <Image source={{ uri: item.strDrinkThumb }} style={styles.image} />
-            <Text style={styles.name}>{item.strDrink}</Text>
-          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('CocktailDetail', { cocktailId: item.idDrink })}>
+            <View style={styles.cocktailItem}>
+              <Image source={{ uri: item.strDrinkThumb }} style={styles.image} />
+              <Text style={styles.name}>{item.strDrink}</Text>
+            </View>
+          </TouchableOpacity>
         )}
         onEndReached={fetchCocktails}
         onEndReachedThreshold={0.5}
