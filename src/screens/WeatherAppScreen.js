@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import WeatherItem from '../components/WeatherItem';
 
 const API_KEY = '7e8e2e58051fba9a97cdd779cb4910c6';
 
@@ -46,7 +47,7 @@ function WeatherAppScreen() {
   if (!weather || !forecast) {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
@@ -63,17 +64,7 @@ function WeatherAppScreen() {
       <FlatList
         data={forecast.list}
         keyExtractor={(item) => item.dt.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.forecastItem}>
-            <Text>{new Date(item.dt * 1000).toLocaleString()}</Text>
-            <Text>{item.main.temp} °C</Text>
-            <Image
-              style={styles.icon}
-              source={{ uri: `http://openweathermap.org/img/wn/${item.weather[0].icon}.png` }}
-            />
-            <Text>{item.weather[0].description}</Text>
-          </View>
-        )}
+        renderItem={({ item }) => <WeatherItem item={item} />}
       />
     </View>
   );
@@ -88,16 +79,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 50,
     height: 50,
-  },
-  forecastItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    borderWidth: 1,
   },
 });
 
