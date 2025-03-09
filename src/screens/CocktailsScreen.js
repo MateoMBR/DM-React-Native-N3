@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
 
-function CocktailsScreen({ navigation }) {
+function CocktailsScreen() {
   const [cocktails, setCocktails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState('a');
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchCocktails();
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
+          <Text style={styles.headerRight}>⭐</Text>
+        </TouchableOpacity>
+      ),
+    });
   }, []);
 
   const fetchCocktails = async () => {
@@ -68,6 +77,10 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
+  },
+  headerRight: {
+    fontSize: 24,
+    marginRight: 10,
   },
 });
 

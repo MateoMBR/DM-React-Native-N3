@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator, Button } from 'react-native';
 import axios from 'axios';
+import { useFavorites } from '../context/FavoritesContext';
 
 const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 
@@ -8,6 +9,7 @@ function CocktailDetailScreen({ route }) {
   const { cocktailId } = route.params;
   const [cocktail, setCocktail] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
     fetchCocktailDetails();
@@ -21,6 +23,16 @@ function CocktailDetailScreen({ route }) {
       console.error(error);
     }
     setLoading(false);
+  };
+
+  const isFavorite = favorites.some(fav => fav.idDrink === cocktailId);
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      removeFavorite(cocktailId);
+    } else {
+      addFavorite(cocktail);
+    }
   };
 
   if (loading) {
@@ -37,6 +49,7 @@ function CocktailDetailScreen({ route }) {
       <Text style={styles.name}>{cocktail.strDrink}</Text>
       <Text style={styles.category}>{cocktail.strCategory}</Text>
       <Text style={styles.instructions}>{cocktail.strInstructions}</Text>
+      <Button title={isFavorite ? "Remove from Favorites" : "Add to Favorites"} onPress={toggleFavorite} />
     </View>
   );
 }
