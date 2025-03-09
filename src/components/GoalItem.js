@@ -1,14 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-function GoalItem({ goal, onDelete }) {
+function GoalItem({ goal, onDelete, onEdit }) {
   return (
-    <TouchableOpacity onPress={() => onDelete(goal.key)}>
-      <View style={styles.goalItem}>
-        <Text>{goal.value}</Text>
-        <Text style={styles.deleteButton}>❌</Text>
+    <View style={styles.goalItem}>
+      <Text>{goal.value}</Text>
+      <View style={styles.buttons}>
+        <TouchableOpacity onPress={() => onEdit(goal)}>
+          <Text style={styles.editButton}>✏️</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onDelete(goal.key)}>
+          <Text style={styles.deleteButton}>❌</Text>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -22,6 +27,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc',
     borderColor: 'black',
     borderWidth: 1,
+  },
+  buttons: {
+    flexDirection: 'row',
+  },
+  editButton: {
+    marginRight: 10,
+    color: 'blue',
   },
   deleteButton: {
     color: 'red',
