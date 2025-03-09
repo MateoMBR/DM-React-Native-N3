@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import GoalItem from '../components/GoalItem';
 
 function ToDoListeScreen() {
   const [goal, setGoal] = useState('');
@@ -15,31 +16,31 @@ function ToDoListeScreen() {
   };
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Nouvel objectif"
-          style={styles.input}
-          onChangeText={setGoal}
-          value={goal}
+    <ImageBackground source={require('../assets/background.avif')} style={styles.background}>
+      <View style={styles.screen}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Nouvel objectif"
+            style={styles.input}
+            onChangeText={setGoal}
+            value={goal}
+          />
+          <Button title="Add" onPress={addGoalHandler} />
+        </View>
+        <FlatList
+          data={goals}
+          renderItem={({ item }) => <GoalItem goal={item} onDelete={removeGoalHandler} />}
         />
-        <Button title="Add" onPress={addGoalHandler} />
       </View>
-      <View>
-        {goals.map(goal => (
-          <View key={goal.key} style={styles.goalItem}>
-            <Text>{goal.value}</Text>
-            <TouchableOpacity onPress={() => removeGoalHandler(goal.key)}>
-              <Text style={styles.deleteButton}>❌</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
   screen: {
     padding: 50,
   },
@@ -53,19 +54,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     padding: 10,
-  },
-  goalItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-  deleteButton: {
-    color: 'red',
   },
 });
 
